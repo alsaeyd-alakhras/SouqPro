@@ -13,3 +13,4 @@ Route::get('/', function () {
 // });
 
 Route::get('/dashboard/home',[HomeController::class,'index']);
+Route::get('/dashboard/table',[HomeController::class,'table']);
