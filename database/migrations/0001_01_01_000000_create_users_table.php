@@ -12,6 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
+            // id BIGINT UNSIGNED AUTO INCREMENT PRIMARY
+            // uuid
+            // timestamps
+            // varchar srting
+            // slug --> unique
+            // ملف migarate منفصل او في نفس الملف عن طريق التراجع وحذف الجدول عن طريق rollback
+            // FK التحقق من صحة البيانات
+            //  nullOnDeleate | cascadeOnDelete | 
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
