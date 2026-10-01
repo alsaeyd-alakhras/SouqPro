@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,9 +13,22 @@ Route::get('/', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth')->name('dashboard');
+// get | post | put | patch | delete
+
+
+Route::group([
+    'middleware' => 'auth',
+    'prefix' => 'dashboard',
+    'as' => 'dashboard.'
+], function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/table', [HomeController::class, 'table'])->name('table');
+
+    // categories
+    // Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+
+    Route::resource('categories',CategoryController::class);
+});
 
 
 Route::middleware('auth')->group(function () {

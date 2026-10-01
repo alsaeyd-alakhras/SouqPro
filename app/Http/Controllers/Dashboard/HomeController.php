@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -11,7 +12,8 @@ class HomeController extends Controller
     {
         // return response (view, json, redirect)
 
-        return view('index');
+        return view('dashboard.index');
+        // return redirect()->route('dashboard.table');
     }
 
 
