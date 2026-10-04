@@ -11,13 +11,42 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // SELECT * FORM `categories` WHERE `is_active` = 1; 
-        $categories = Category::where('is_active', true)->get();
+        // Clotes LINK ote
+        $search = $request->query('search');
+        // if ($search) {
+        //     // SELECT * FORM `categories` WHERE `is_active` = 1; 
+        //     $categories = Category::where('is_active', true)
+        //         // ->where('name','LIKE',"%{$search}%")
+        //         ->where('name', $search)
+        //         ->get();
+        // } else {
+        //     $categories = Category::where('is_active', true)
+        //         // ->where('name','LIKE',"%{$search}%")
+        //         ->get();
+        // }
+        // $categories = Category::query();
+        // $categories = Category::where('is_active', true);
+        // // $categories->where('is_active', true);
+
+        // if($search){
+        //     $categories->where('name', $search);
+        // }
+
+        // $categories = $categories->get();
+
+        $categories = Category::where('is_active', true)
+            // ->where('name','LIKE',"%{$search}%")
+            // ->wher('name', $search)
+            ->when($search, function($query, $search){
+                $query->where('name',$search);
+            })
+            ->get();
+
         // $categories = Category::whereIn('slug', ['clotes','books'])->get();
 
-        return view('dashboard.categories.index',compact('categories'));
+        return view('dashboard.categories.index', compact('categories'));
     }
 
     /**

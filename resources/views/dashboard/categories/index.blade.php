@@ -41,8 +41,23 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card mb-4">
-                        <div class="card-header">
-                            <h3 class="card-title">Categories Table</h3>
+                        <div class="card-header bg-white py-3">
+                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+
+                                <h5 class="card-title mb-0 fw-semibold">
+                                    Categories Table
+                                </h5>
+
+                                <form action="{{ route('dashboard.categories.index') }}" method="GET"
+                                    class="d-flex gap-2">
+                                    <input type="text" name="search" value="{{ request('search') }}"
+                                        class="form-control" placeholder="Search categories...">
+
+                                    <button type="submit" class="btn btn-primary px-4">
+                                        Search
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -57,12 +72,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($categories as $category)
+                                    @forelse ($categories as $category)
                                         <tr class="align-middle">
                                             <td>{{ $category->id }}</td>
                                             <td>{{ $category->name }}</td>
                                             <td>
-                                                {{ $category->is_active ? "Active" : "---"  }}
+                                                {{ $category->is_active ? 'Active' : '---' }}
                                                 {{-- @if ($category->is_active == true)
                                                     <span>Active</span>    
                                                 @endif --}}
@@ -74,7 +89,11 @@
 
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr class="align-middle">
+                                            <td colspan="5">لا يوجد منتجات</td>
+                                        </tr>
+                                    @endforelse
 
                                 </tbody>
                             </table>
