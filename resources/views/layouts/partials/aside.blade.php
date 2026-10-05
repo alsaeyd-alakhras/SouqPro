@@ -20,7 +20,7 @@
             <!--begin::Sidebar Menu-->
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation"
                 aria-label="Main navigation" data-accordion="false" id="navigation">
-                <li class="nav-item menu-open">
+                {{-- <li class="nav-item menu-open">
                     <a href="#" class="nav-link active">
                         <i class="nav-icon bi bi-speedometer"></i>
                         <p>
@@ -48,8 +48,26 @@
                             </a>
                         </li>
                     </ul>
+                </li> --}}
+                <li class="nav-item">
+                    <a href="{{ route('dashboard.home') }}" class="nav-link active">
+                        <i class="nav-icon bi bi-palette"></i>
+                        <p>Dashboard</p>
+                    </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('dashboard.categories.index') }}" class="nav-link">
+                        <i class="nav-icon bi bi-palette"></i>
+                        <p>categories</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('dashboard.products.index') }}" class="nav-link">
+                        <i class="nav-icon bi bi-palette"></i>
+                        <p>Product</p>
+                    </a>
+                </li>
+                {{-- <li class="nav-item">
                     <a href="./generate/theme.html" class="nav-link">
                         <i class="nav-icon bi bi-palette"></i>
                         <p>Theme Generate</p>
@@ -218,8 +236,8 @@
                             </a>
                         </li>
                     </ul>
-                </li>
-
+                </li> --}}
+{{-- 
                 <li class="nav-header">EXAMPLES</li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -453,7 +471,7 @@
                         <i class="nav-icon bi bi-circle text-info"></i>
                         <p>Informational</p>
                     </a>
-                </li>
+                </li> --}}
             </ul>
             <!--end::Sidebar Menu-->
         </nav>

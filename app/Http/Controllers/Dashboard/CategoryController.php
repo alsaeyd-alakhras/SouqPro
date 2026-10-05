@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -62,7 +63,44 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        // validate
+        $request->validate([
+            'name' => 'string|max:255|required',
+            'description' => 'string|nullable',
+            'is_active' => 'in:on,off'
+        ]);
+
+        // code
+        $name = $request->name;
+        $slug = Str::slug($name);
+        $org_slug = $slug;
+        $count = 1;
+        // $check_slug = Category::where('slug', $slug);
+        // if($check_slug){
+        //     $slug = $slug . '1';
+        // }
+        while(Category::where('slug', $slug)->exists()){
+            $slug = $org_slug . '-' . $count;
+            $count++;
+        }
+        $is_active = $request->is_active == 'on' ? 1 : 0;
+
+        $request->merge([
+            'slug' => $slug,
+            'is_active' => $is_active,
+        ]);
+        // create
+        // Category::create([
+        //     'name' => $name,
+        //     'slug' => $slug,
+        //     'description' => $request->description,
+        //     'is_active' => $is_active,
+        // ]);
+        $category = Category::create($request->all());
+
+        // redirct
+        return redirect()->route('dashboard.categories.index');
     }
 
     /**

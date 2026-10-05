@@ -19,12 +19,12 @@
             <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Dashboard</h3>
+                    <h3 class="mb-0">Categories</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                        <li class="breadcrumb-item active" aria-current="page">Categories</li>
                     </ol>
                 </div>
             </div>
@@ -48,15 +48,21 @@
                                     Categories Table
                                 </h5>
 
-                                <form action="{{ route('dashboard.categories.index') }}" method="GET"
-                                    class="d-flex gap-2">
-                                    <input type="text" name="search" value="{{ request('search') }}"
-                                        class="form-control" placeholder="Search categories...">
+                                <div class="d-flex gap-2">
+                                    <form action="{{ route('dashboard.categories.index') }}" method="GET"
+                                        class="d-flex gap-2">
+                                        <input type="text" name="search" value="{{ request('search') }}"
+                                            class="form-control" placeholder="Search categories...">
 
-                                    <button type="submit" class="btn btn-primary px-4">
-                                        Search
-                                    </button>
-                                </form>
+                                        <button type="submit" class="btn btn-primary px-4">
+                                            Search
+                                        </button>
+                                    </form>
+                                    <a href="{{ route('dashboard.categories.create') }}" class="btn btn-success px-4">
+                                        + Add
+                                    </a>
+                                </div>
+
                             </div>
                         </div>
                         <!-- /.card-header -->
