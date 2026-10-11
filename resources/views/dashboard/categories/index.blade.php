@@ -33,6 +33,16 @@
         <!--end::Container-->
     </div>
     <!--end::App Content Header-->
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <!--begin::App Content-->
     <div class="app-content">
         <!--begin::Container-->
@@ -91,8 +101,19 @@
                                             <td>
                                                 {{ $category->description }}
                                             </td>
-                                            <td>
-
+                                            <td class="d-flex gap-2">
+                                                <a href="{{ route('dashboard.categories.edit', $category->id) }}"
+                                                    class="btn btn-info px-4">
+                                                    Edit
+                                                </a>
+                                                <form action="{{ route('dashboard.categories.destroy', $category->id) }}"
+                                                    method="post">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit" class="btn btn-danger px-4">
+                                                        Delete
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     @empty

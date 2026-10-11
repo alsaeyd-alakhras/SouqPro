@@ -40,8 +40,8 @@ class CategoryController extends Controller
         $categories = Category::where('is_active', true)
             // ->where('name','LIKE',"%{$search}%")
             // ->wher('name', $search)
-            ->when($search, function($query, $search){
-                $query->where('name',$search);
+            ->when($search, function ($query, $search) {
+                $query->where('name', $search);
             })
             ->get();
 
@@ -55,7 +55,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('dashboard.categories.create');
+        $category = new Category();
+        return view('dashboard.categories.create',compact('category'));
     }
 
     /**
@@ -80,7 +81,7 @@ class CategoryController extends Controller
         // if($check_slug){
         //     $slug = $slug . '1';
         // }
-        while(Category::where('slug', $slug)->exists()){
+        while (Category::where('slug', $slug)->exists()) {
             $slug = $org_slug . '-' . $count;
             $count++;
         }
@@ -100,7 +101,7 @@ class CategoryController extends Controller
         $category = Category::create($request->all());
 
         // redirct
-        return redirect()->route('dashboard.categories.index');
+        return redirect()->route('dashboard.categories.index')->with('success','the Category New Added');
     }
 
     /**
@@ -116,22 +117,64 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // $category = Category::find($id);
+        // if(!$category){
+        //     return redirect()->route('dashboard.categories.index');
+        // }
+        $category = Category::findOrFail($id);
+        // dd($category);
+        return view('dashboard.categories.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        // dd($request->all(),$category);
+        // validate
+        $request->validate([
+            'name' => 'string|max:255|required',
+            'description' => 'string|nullable',
+            'is_active' => 'in:on,off'
+        ]);
+
+        // code
+        $name = $request->name;
+        // Nore  Store => nore-sotre
+        if ($name != $category->name) {
+            $slug = Str::slug($name);
+            $org_slug = $slug;
+            $count = 1;
+            while (Category::where('id','<>',$category->id)->where('slug', $slug)->exists()) {
+                $slug = $org_slug . '-' . $count;
+                $count++;
+            }
+            $request->merge([
+                'slug' => $slug,
+            ]);
+        }
+
+        $is_active = $request->is_active == 'on' ? 1 : 0;
+        $request->merge([
+            'is_active' => $is_active,
+        ]);
+
+        // dd($request->all());
+        // edit
+        $category = $category->update($request->all());
+
+        // redirct
+        return redirect()->route('dashboard.categories.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return redirect()->route('dashboard.categories.index')->with('error','The Category Deleted');
     }
 }

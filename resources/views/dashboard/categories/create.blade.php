@@ -57,19 +57,7 @@
                             @csrf
                             <!--begin::Body-->
                             <div class="card-body">
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">Name</label>
-                                    <input type="text" name="name" class="form-control" id="name" />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="description" class="form-label">Description</label>
-                                    <textarea class="form-control" name="description" id="description" aria-label="With textarea"></textarea>
-                                </div>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" name="is_active" checked class="form-check-input"
-                                        id="is_active" />
-                                    <label class="form-check-label" for="is_active">Active</label>
-                                </div>
+                                @include('dashboard.categories._form')
                             </div>
                             <!--end::Body-->
                             <!--begin::Footer-->
