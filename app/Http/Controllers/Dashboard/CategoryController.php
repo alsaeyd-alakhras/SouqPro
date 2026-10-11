@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
@@ -56,7 +57,7 @@ class CategoryController extends Controller
     public function create()
     {
         $category = new Category();
-        return view('dashboard.categories.create',compact('category'));
+        return view('dashboard.categories.create', compact('category'));
     }
 
     /**
@@ -65,11 +66,13 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
 
+        // dd($request->all());
         // validate
         $request->validate([
             'name' => 'string|max:255|required',
             'description' => 'string|nullable',
-            'is_active' => 'in:on,off'
+            'is_active' => 'in:on,off',
+            'image_path' => 'file|image'
         ]);
 
         // code
@@ -87,6 +90,17 @@ class CategoryController extends Controller
         }
         $is_active = $request->is_active == 'on' ? 1 : 0;
 
+        if ($request->hasFile('image_path')) {
+            $image = $request->file('image_path');
+            $time = now()->format('Y-m-d_H-i-s');
+            $image_name = $time . '_' .  uniqid() . '.' . $image->extension();
+            // $image_path = $image->store('categories','public');
+            $image_path = $image->storeAs('categories', $image_name, 'public');
+            $request->merge([
+                'image_path' => $image_path,
+            ]);
+        }
+
         $request->merge([
             'slug' => $slug,
             'is_active' => $is_active,
@@ -101,7 +115,7 @@ class CategoryController extends Controller
         $category = Category::create($request->all());
 
         // redirct
-        return redirect()->route('dashboard.categories.index')->with('success','the Category New Added');
+        return redirect()->route('dashboard.categories.index')->with('success', 'the Category New Added');
     }
 
     /**
@@ -136,7 +150,8 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'string|max:255|required',
             'description' => 'string|nullable',
-            'is_active' => 'in:on,off'
+            'is_active' => 'in:on,off',
+            'image_path' => 'file|image'
         ]);
 
         // code
@@ -146,7 +161,7 @@ class CategoryController extends Controller
             $slug = Str::slug($name);
             $org_slug = $slug;
             $count = 1;
-            while (Category::where('id','<>',$category->id)->where('slug', $slug)->exists()) {
+            while (Category::where('id', '<>', $category->id)->where('slug', $slug)->exists()) {
                 $slug = $org_slug . '-' . $count;
                 $count++;
             }
@@ -159,6 +174,21 @@ class CategoryController extends Controller
         $request->merge([
             'is_active' => $is_active,
         ]);
+
+        $image_old = $category->image_path;
+        if ($request->hasFile('image_path')) {
+            $image = $request->file('image_path');
+            $time = now()->format('Y-m-d_H-i-s');
+            $image_name = $time . '_' .  uniqid() . '.' . $image->extension();
+            // $image_path = $image->store('categories','public');
+            $image_path = $image->storeAs('categories', $image_name, 'public');
+            if ($image_old && $image_path) {
+                Storage::disk('public')->delete($image_old);
+            }
+            $request->merge([
+                'image_path' => $image_path,
+            ]);
+        }
 
         // dd($request->all());
         // edit
@@ -173,8 +203,11 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        $image_old = $category->image_path;
         $category->delete();
-
-        return redirect()->route('dashboard.categories.index')->with('error','The Category Deleted');
+        if ($image_old) {
+            Storage::disk('public')->delete($image_old);
+        }
+        return redirect()->route('dashboard.categories.index')->with('error', 'The Category Deleted');
     }
 }

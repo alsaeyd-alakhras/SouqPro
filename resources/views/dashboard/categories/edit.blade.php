@@ -44,7 +44,7 @@
                         </div>
                         <!--end::Header-->
                         <!--begin::Form-->
-                        <form action="{{ route('dashboard.categories.update',$category->id) }}" method="POST">
+                        <form action="{{ route('dashboard.categories.update',$category->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <!--begin::Body-->

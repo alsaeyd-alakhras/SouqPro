@@ -53,7 +53,7 @@
                         </div>
                         <!--end::Header-->
                         <!--begin::Form-->
-                        <form action="{{ route('dashboard.categories.store') }}" method="post">
+                        <form action="{{ route('dashboard.categories.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <!--begin::Body-->
                             <div class="card-body">

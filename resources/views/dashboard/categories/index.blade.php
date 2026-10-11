@@ -91,7 +91,10 @@
                                     @forelse ($categories as $category)
                                         <tr class="align-middle">
                                             <td>{{ $category->id }}</td>
-                                            <td>{{ $category->name }}</td>
+                                            <td>
+                                                <img src="{{ $category->image_url }}" height="50" alt="">
+                                                {{ $category->name }}
+                                            </td>
                                             <td>
                                                 {{ $category->is_active ? 'Active' : '---' }}
                                                 {{-- @if ($category->is_active == true)
