@@ -195,7 +195,7 @@ class CategoryController extends Controller
         $category = $category->update($request->all());
 
         // redirct
-        return redirect()->route('dashboard.categories.index');
+        return redirect()->route('dashboard.categories.index')->with('success', 'the Category Updated');
     }
 
     /**

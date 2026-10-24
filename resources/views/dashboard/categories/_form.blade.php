@@ -1,6 +1,7 @@
 <div class="mb-3">
-    <label for="name" class="form-label">Name</label>
-    <input type="text" name="name" class="form-control" id="name" value="{{ old('name', $category->name) }}" />
+    {{-- <label for="name" class="form-label">Name</label>
+    <input type="text" name="name" class="form-control" id="name" value="{{ old('name', $category->name) }}" /> --}}
+    <x-form.input label="Name" name="name" :value="$category->name" class="text-red" aria-label="With textarea" />
 </div>
 
 <div class="mb-3">

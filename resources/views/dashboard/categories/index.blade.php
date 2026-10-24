@@ -33,16 +33,19 @@
         <!--end::Container-->
     </div>
     <!--end::App Content Header-->
-    @if (session('success'))
+    {{-- @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
-    @endif
-    @if (session('error'))
+    @endif --}}
+    <x-alert type="success" />
+    <x-alert type="info" />
+    <x-alert type="error" />
+    {{-- @if (session('error'))
         <div class="alert alert-danger">
             {{ session('error') }}
         </div>
-    @endif
+    @endif --}}
     <!--begin::App Content-->
     <div class="app-content">
         <!--begin::Container-->
