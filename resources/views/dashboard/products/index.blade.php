@@ -13,6 +13,9 @@
 
 @section('content')
 
+    <x-alert type="success" />
+    <x-alert type="error" />
+
     <!--begin::App Content Header-->
     <div class="app-content-header">
         <div class="container-fluid">
@@ -59,17 +62,17 @@
                                 </h5>
 
 
-                                {{-- Search --}}
-                                <form action="{{ route('dashboard.products.index') }}" method="GET" class="d-flex gap-2">
+                                <div class="d-flex gap-2">
+                                    <form action="{{ route('dashboard.products.index') }}" method="GET" class="d-flex gap-2">
 
-                                    <input type="text" name="search" value="{{ request('search') }}"
-                                        class="form-control" placeholder="Search products...">
+                                        <input type="text" name="search" value="{{ request('search') }}"
+                                            class="form-control" placeholder="Search products...">
 
-                                    <button type="submit" class="btn btn-primary px-4">
-                                        Search
-                                    </button>
+                                        <button type="submit" class="btn btn-primary px-4">Search</button>
+                                    </form>
 
-                                </form>
+                                    <a href="{{ route('dashboard.products.create') }}" class="btn btn-success px-4">+ Add</a>
+                                </div>
 
                             </div>
 
@@ -127,6 +130,8 @@
 
                                                 {{-- Name --}}
                                                 <td>
+                                                    <img src="{{ $product->image_url }}" width="50" height="50"
+                                                        class="me-2 rounded" style="object-fit: contain;" alt="{{ $product->name }}">
                                                     {{ $product->name }}
                                                 </td>
 
@@ -139,13 +144,13 @@
 
                                                 {{-- Store --}}
                                                 <td>
-                                                    {{ $product->store?->name ?? '---' }}
+                                                    {{ $stores[$product->store_id] ?? '---' }}
                                                 </td>
 
 
                                                 {{-- Category --}}
                                                 <td>
-                                                    {{ $product->category?->name ?? '---' }}
+                                                    {{ $categories[$product->category_id] ?? '---' }}
                                                 </td>
 
 
@@ -156,8 +161,14 @@
 
 
                                                 {{-- Actions --}}
-                                                <td>
-
+                                                <td class="d-flex gap-2">
+                                                    <a href="{{ route('dashboard.products.edit', $product->id) }}"
+                                                        class="btn btn-info px-4">Edit</a>
+                                                    <form action="{{ route('dashboard.products.destroy', $product->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger px-4">Delete</button>
+                                                    </form>
                                                 </td>
 
                                             </tr>
