@@ -19,14 +19,24 @@ class ProductController extends Controller
     {
         $search = $request->query('search');
 
-        $products = Product::when($search, function ($query, $search) {
+        $products = Product::with('category')->when($search, function ($query, $search) {
             $query->where('name', 'LIKE', "%{$search}%");
         })->paginate(10)->withQueryString();
 
         $stores = Store::pluck('name', 'id');
-        $categories = Category::pluck('name', 'id');
+        // $categories = Category::pluck('name', 'id');
 
-        return view('dashboard.products.index', compact('products', 'stores', 'categories'));
+        // $products = Product::all();
+
+        // foreach ($products as $product) {
+        //     echo $product->category->name; // 20 product --> 21 queries
+        // }
+        // foreach ($products as $product) {
+        //     echo $product->category->name;
+        // }
+
+
+        return view('dashboard.products.index', compact('products', 'stores'));
     }
 
     /**
@@ -64,13 +74,13 @@ class ProductController extends Controller
         $count = 1;
 
         while (Product::where('slug', $slug)->exists()) {
-            $slug = $originalSlug.'-'.$count;
+            $slug = $originalSlug . '-' . $count;
             $count++;
         }
 
         if ($request->hasFile('image_path')) {
             $image = $request->file('image_path');
-            $imageName = now()->format('Y-m-d_H-i-s').'_'.uniqid().'.'.$image->extension();
+            $imageName = now()->format('Y-m-d_H-i-s') . '_' . uniqid() . '.' . $image->extension();
             $imagePath = $image->storeAs('products', $imageName, 'public');
 
             $request->merge(['image_path' => $imagePath]);
@@ -128,7 +138,7 @@ class ProductController extends Controller
             $count = 1;
 
             while (Product::where('id', '<>', $product->id)->where('slug', $slug)->exists()) {
-                $slug = $originalSlug.'-'.$count;
+                $slug = $originalSlug . '-' . $count;
                 $count++;
             }
 
@@ -139,7 +149,7 @@ class ProductController extends Controller
 
         if ($request->hasFile('image_path')) {
             $image = $request->file('image_path');
-            $imageName = now()->format('Y-m-d_H-i-s').'_'.uniqid().'.'.$image->extension();
+            $imageName = now()->format('Y-m-d_H-i-s') . '_' . uniqid() . '.' . $image->extension();
             $imagePath = $image->storeAs('products', $imageName, 'public');
 
             if ($oldImage && $imagePath) {

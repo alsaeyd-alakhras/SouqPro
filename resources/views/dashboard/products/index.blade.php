@@ -150,7 +150,7 @@
 
                                                 {{-- Category --}}
                                                 <td>
-                                                    {{ $categories[$product->category_id] ?? '---' }}
+                                                    {{ $product->category?->name ?? '---' }}
                                                 </td>
 
 

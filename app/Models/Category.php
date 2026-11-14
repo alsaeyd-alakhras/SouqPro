@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -40,4 +41,16 @@ class Category extends Model
         return asset('storage/'.$this->image_path);
         // return Storage::disk('public')->path($this->image_path);
     }
+
+
+    // Relationship
+    public function products () : HasMany
+    {
+        return $this->hasMany(Product::class, 'category_id', 'id');
+    }
+    public function activeProducts () : HasMany
+    {
+        return $this->hasMany(Product::class, 'category_id', 'id')->where('price','>=','100');
+    }
+
 }

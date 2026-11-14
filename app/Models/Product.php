@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -41,5 +42,12 @@ class Product extends Model
         // storage
         return asset('storage/' . $this->image_path);
         // return Storage::disk('public')->path($this->image_path);
+    }
+
+
+    // Relationship
+    public function category() : BelongsTo 
+    {
+        return $this->belongsTo(Category::class);
     }
 }

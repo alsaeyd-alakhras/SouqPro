@@ -114,6 +114,15 @@ class CategoryController extends Controller
         // ]);
         $category = Category::create($request->all());
 
+
+        // $category->products()->create([
+        //     'name' => 'iPhone 15',
+        //     'price' => 999,
+        //     'stock' => 5,
+        // ]);
+
+        // category_id set automatically
+
         // redirct
         return redirect()->route('dashboard.categories.index')->with('success', 'the Category New Added');
     }

@@ -224,7 +224,7 @@
                             </div>
                         </div>
                         <div class="product-info">
-                            <span class="category">---</span>
+                            <span class="category">{{ $product->category?->name ?? 'No Category' }}</span>
                             <h4 class="title">
                                 <a href="product-grids.html">{{ $product->name }}</a>
                             </h4>
